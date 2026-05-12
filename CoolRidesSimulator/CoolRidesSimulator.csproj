@@ -43,18 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildCarCommand.cs" />
+    <Compile Include="BuildMinibusCommand.cs" />
     <Compile Include="Car.cs" />
+    <Compile Include="CarAssemblyLine.cs" />
     <Compile Include="CarChassis.cs" />
     <Compile Include="CarPartsFactory.cs" />
     <Compile Include="CarShell.cs" />
     <Compile Include="CarTrim.cs" />
     <Compile Include="CarWheel.cs" />
+    <Compile Include="IAssemblyLine.cs" />
     <Compile Include="IChassis.cs" />
+    <Compile Include="ICommand.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="ITrim.cs" />
     <Compile Include="IVehiclePartsFactory.cs" />
     <Compile Include="IWheel.cs" />
     <Compile Include="MiniBus.cs" />
+    <Compile Include="MinibusAssemblyLine.cs" />
     <Compile Include="MiniBusChassis.cs" />
     <Compile Include="MinibusPartsFactory.cs" />
     <Compile Include="MiniBusShell.cs" />
