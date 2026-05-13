@@ -8,19 +8,19 @@ namespace CoolRidesSimulator
 {
     class MinibusPartsFactory : IVehiclePartsFactory
     {
-        public IChassis CreateChassis()
+        public Chassis CreateChassis()
         {
             return new MiniBusChassis();
         }
-        public IShell CreateShell()
+        public Shell CreateShell()
         {
             return new MiniBusShell();
         }
-        public IWheel CreateWheels()
+        public Wheel CreateWheels()
         {
             return new MiniBusWheel();
         }
-        public ITrim TrimDecoration()
+        public Trim TrimDecoration()
         {
             return new MiniBusTrim();
         }

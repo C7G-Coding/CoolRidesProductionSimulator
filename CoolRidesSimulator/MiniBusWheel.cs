@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class MiniBusWheel : IWheel
+    class MiniBusWheel : Wheel
     {
-        public void CreateWheels()
-        {
 
-        }
+        public override string PartName => "Minibus Wheel";
+        public override double BuildTimeSeconds => 0.5;
     }
 }

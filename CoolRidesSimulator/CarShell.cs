@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class CarShell : IShell
+    class CarShell : Shell
     {
-        public void CreateShell()
-        {
+        public override string PartName => "Car Shell";
+        public override double BuildTimeSeconds => 2;
 
-        }
     }
 }
+

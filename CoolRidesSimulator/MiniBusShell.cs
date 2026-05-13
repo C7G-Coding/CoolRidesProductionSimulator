@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class MiniBusShell : IShell
-    { 
-        public void CreateShell()
-        {
-
-        }
+    class MiniBusShell : Shell
+    {
+        public override string PartName => "Minibus Shell";
+        public override double BuildTimeSeconds => 3;
     }
 }

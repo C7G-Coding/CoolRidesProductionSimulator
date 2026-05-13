@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class MiniBusChassis : IChassis
+    class MiniBusChassis : Chassis
     {
-        public void CreateChassis()
-        {
-
-        }
+         public override string PartName => "Minibus Chassis";
+         public override double BuildTimeSeconds => 2;
+    
     }
 }

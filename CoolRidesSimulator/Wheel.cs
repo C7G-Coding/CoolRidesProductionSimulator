@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    interface IShell
+    abstract class Wheel
     {
-        void CreateShell();
+        public abstract string PartName { get; }
+        public abstract double BuildTimeSeconds { get; }
     }
 }

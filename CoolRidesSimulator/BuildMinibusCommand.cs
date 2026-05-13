@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    public class BuildMinibusCommand
+    public class BuildMinibusCommand : ICommand
     {
         private MinibusAssemblyLine _assemblyLine;
         private string _colour;

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    interface IWheel
+    abstract class Trim
     {
-        void CreateWheels();
+        public abstract string PartName { get; }
+        public abstract double BuildTimeSeconds { get; }
     }
 }

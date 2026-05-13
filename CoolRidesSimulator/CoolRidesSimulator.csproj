@@ -53,12 +53,12 @@
     <Compile Include="CarTrim.cs" />
     <Compile Include="CarWheel.cs" />
     <Compile Include="IAssemblyLine.cs" />
-    <Compile Include="IChassis.cs" />
+    <Compile Include="Chassis.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="IShell.cs" />
-    <Compile Include="ITrim.cs" />
+    <Compile Include="Shell.cs" />
+    <Compile Include="Trim.cs" />
     <Compile Include="IVehiclePartsFactory.cs" />
-    <Compile Include="IWheel.cs" />
+    <Compile Include="Wheel.cs" />
     <Compile Include="MiniBus.cs" />
     <Compile Include="MinibusAssemblyLine.cs" />
     <Compile Include="MiniBusChassis.cs" />

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    interface ITrim
+    abstract class Chassis
     {
-        void TrimDecoration();
+     public abstract string PartName { get; }
+     public abstract double BuildTimeSeconds { get; }
     }
 }

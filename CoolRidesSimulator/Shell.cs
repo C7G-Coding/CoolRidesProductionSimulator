@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    interface IChassis
+    abstract class Shell
     {
-        void CreateChassis();
+        public abstract string PartName { get; }
+        public abstract double BuildTimeSeconds { get; }
     }
 }

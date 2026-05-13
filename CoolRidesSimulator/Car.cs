@@ -8,5 +8,13 @@ namespace CoolRidesSimulator
 {
     class Car
     {
+        public string Model { get; set; }
+        public string Colour { get; set; }
+
+        public Car(string model, string colour)
+        {
+            Model = model;
+            Colour = colour;
+        }
     }
 }

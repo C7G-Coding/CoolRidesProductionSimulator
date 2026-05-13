@@ -8,5 +8,13 @@ namespace CoolRidesSimulator
 {
     class MiniBus
     {
+        public string Model { get; set; }
+        public string Colour { get; set; }
+
+        public MiniBus(string model, string colour)
+        {
+            Model = model;
+            Colour = colour;
+        }
     }
 }

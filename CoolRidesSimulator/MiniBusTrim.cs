@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class MiniBusTrim : ITrim
+    class MiniBusTrim : Trim
     {
-        public void TrimDecoration()
-        {
-
-        }
+        public override string PartName => "Minibus Interior Trim";
+        public override double BuildTimeSeconds => 2;
     }
 }
