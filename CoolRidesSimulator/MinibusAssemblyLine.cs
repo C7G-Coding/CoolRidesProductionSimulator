@@ -35,7 +35,6 @@ namespace CoolRidesSimulator
 
         public void UndoLastCommand()
         {
-            // Optional: implement if needed
             Console.WriteLine("[MinibusAssemblyLine] Undo feature - to be implemented");
         }
 
@@ -43,26 +42,25 @@ namespace CoolRidesSimulator
         {
             Console.WriteLine($"  🚐 Building MINIBUS in {colour}");
 
-            // Simulate building parts with delays
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  // Chassis: 2 seconds
+            Thread.Sleep(2000);  
 
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(3000);  // Shell: 3 seconds (longer than car)
+            Thread.Sleep(3000); 
 
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  // Each wheel: 0.5 seconds
+                Thread.Sleep(500);  
             }
 
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(2000);  // Trim: 2 seconds (longer than car)
+            Thread.Sleep(2000); 
 
             Console.WriteLine($"  ✅ Minibus assembly complete!");
 
-            // Send to spraybooth
+
             Spraybooth.Instance.Spray("Minibus", colour);               //Waiting for Person 4 (Motheo)
         }
 
