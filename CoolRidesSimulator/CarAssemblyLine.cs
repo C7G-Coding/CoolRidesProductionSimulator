@@ -70,5 +70,47 @@ namespace CoolRidesSimulator
         {
             AddCommand(command);
         }
+        // Added for tracking current task in the UI [AIDEN]
+
+        private string _currentTaskDescription = "None";
+        private readonly object _queueLock = new object();
+
+        public async Task ProcessQueueAsync()
+        {
+            while (true)
+            {
+                ICommand command = null;
+                lock (_queueLock)
+                {
+                    if (_commandQueue.Count > 0)
+                        command = _commandQueue.Dequeue();
+                }
+
+                if (command != null)
+                {
+                    _isBusy = true;
+                    _currentTaskDescription = command.GetName();
+                    Console.WriteLine($"[CarAssemblyLine] Executing: {command.GetName()}");
+                    command.Execute();
+                    _isBusy = false;
+                    _currentTaskDescription = "None";
+                }
+
+                await Task.Delay(100); // Small delay to prevent CPU spinning
+            }
+        }
+
+        public int GetQueueCount()
+        {
+            lock (_queueLock)
+            {
+                return _commandQueue.Count;
+            }
+        }
+
+        public string GetCurrentTaskDescription()
+        {
+            return _currentTaskDescription;
+        }
     }
 }

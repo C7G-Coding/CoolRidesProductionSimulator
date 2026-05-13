@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1BB70C7B-3813-482B-B902-CE708B41B059}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>CoolRidesSimulator</RootNamespace>
     <AssemblyName>CoolRidesSimulator</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -32,9 +32,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,10 +60,15 @@
     <Compile Include="CarShell.cs" />
     <Compile Include="CarTrim.cs" />
     <Compile Include="CarWheel.cs" />
+    <Compile Include="HQ.cs" />
     <Compile Include="IAssemblyLine.cs" />
     <Compile Include="Chassis.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Shell.cs" />
+    <Compile Include="Spraybooth.cs" />
     <Compile Include="Trim.cs" />
     <Compile Include="IVehiclePartsFactory.cs" />
     <Compile Include="Wheel.cs" />
