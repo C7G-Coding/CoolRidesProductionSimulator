@@ -35,7 +35,6 @@ namespace CoolRidesSimulator
 
         public void UndoLastCommand()
         {
-            // Optional: implement if needed
             Console.WriteLine("[CarAssemblyLine] Undo feature - to be implemented");
         }
 
@@ -43,27 +42,26 @@ namespace CoolRidesSimulator
         {
             Console.WriteLine($"  🚗 Building CAR in {colour}");
 
-            // Simulate building parts with delays
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  // Chassis: 2 seconds
+            Thread.Sleep(2000);  
 
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(2000);  // Shell: 2 seconds
+            Thread.Sleep(2000);  
 
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  // Each wheel: 0.5 seconds
+                Thread.Sleep(500);  
             }
 
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(1000);  // Trim: 1 second
+            Thread.Sleep(1000); 
 
             Console.WriteLine($"  ✅ Car assembly complete!");
 
-            // Send to spraybooth
-            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person Person 4 (Motheo)
+            
+            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person 4 (Motheo)
         }
 
         public void AddToQueue(ICommand command)
