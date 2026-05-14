@@ -39,41 +39,64 @@ namespace CoolRidesSimulator
             }
         }
 
+        public void UndoLastCommand()
+        {
+            Console.WriteLine("[MinibusAssemblyLine] Undo feature - to be implemented");
+        }
+
         public void BuildMinibus(string colour)
         {
+            // Update task - Chassis
+            SetTaskDescription($"🚐 Minibus ({colour}) - Building Chassis (2s)");
             Console.WriteLine($"  🚐 Building MINIBUS in {colour}");
-
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  
+            Thread.Sleep(2000);
 
+            // Update task - Shell
+            SetTaskDescription($"🚐 Minibus ({colour}) - Building Shell (3s)");
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(3000); 
+            Thread.Sleep(3000);
 
+            // Update task - Wheels
+            SetTaskDescription($"🚐 Minibus ({colour}) - Building 4 Wheels (2s total)");
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  
+                Thread.Sleep(500);
             }
             Console.WriteLine($"   ✓ All 4 wheels complete!");
 
+            // Update task - Trim
+            SetTaskDescription($"🚐 Minibus ({colour}) - Installing Interior Trim (2s)");
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(2000); 
+            Thread.Sleep(2000);
 
+            // Assembly complete
+            SetTaskDescription($"🚐 Minibus ({colour}) - Assembly complete!");
             Console.WriteLine($"  ✅ Minibus assembly complete!");
 
+            // Send to spraybooth
+            SetTaskDescription($"🚐 Minibus ({colour}) - Sending to Spraybooth (7s drying)");
+            Spraybooth.Instance.Spray("Minibus", colour);
 
-            Spraybooth.Instance.Spray("Minibus", colour);               //Waiting for Person 4 (Motheo)
+            // Done
+            SetTaskDescription("None");
         }
 
         public void AddToQueue(ICommand command)
         {
             AddCommand(command);
         }
-        // Added for tracking current task [AIDEN]
 
-        private string _currentTaskDescription = "None";
-        private readonly object _queueLock = new object();
+        // Thread-safe task description setter
+        private void SetTaskDescription(string description)
+        {
+            lock (_taskLock)
+            {
+                _currentTaskDescription = description;
+            }
+        }
 
         public async Task ProcessQueueAsync()
         {
@@ -89,11 +112,10 @@ namespace CoolRidesSimulator
                 if (command != null)
                 {
                     _isBusy = true;
-                    _currentTaskDescription = command.GetName();
+                    SetTaskDescription(command.GetName());
                     Console.WriteLine($"[MinibusAssemblyLine] Executing: {command.GetName()}");
                     command.Execute();
                     _isBusy = false;
-                    _currentTaskDescription = "None";
                 }
 
                 await Task.Delay(100);
@@ -110,7 +132,10 @@ namespace CoolRidesSimulator
 
         public string GetCurrentTaskDescription()
         {
-            return _currentTaskDescription;
+            lock (_taskLock)
+            {
+                return _currentTaskDescription;
+            }
         }
     }
 }

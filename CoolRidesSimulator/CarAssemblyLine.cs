@@ -39,41 +39,64 @@ namespace CoolRidesSimulator
             }
         }
 
+        public void UndoLastCommand()
+        {
+            Console.WriteLine("[CarAssemblyLine] Undo feature - to be implemented");
+        }
+
         public void BuildCar(string colour)
         {
+            // Update task - Chassis
+            SetTaskDescription($"🚗 Car ({colour}) - Building Chassis (2s)");
             Console.WriteLine($"  🚗 Building CAR in {colour}");
-
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  
+            Thread.Sleep(2000);
 
+            // Update task - Shell
+            SetTaskDescription($"🚗 Car ({colour}) - Building Shell (2s)");
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(2000);  
+            Thread.Sleep(2000);
 
+            // Update task - Wheels
+            SetTaskDescription($"🚗 Car ({colour}) - Building 4 Wheels (2s total)");
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  
+                Thread.Sleep(500);
             }
             Console.WriteLine($"   ✓ All 4 wheels complete!");
 
+            // Update task - Trim
+            SetTaskDescription($"🚗 Car ({colour}) - Installing Interior Trim (1s)");
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(1000); 
+            Thread.Sleep(1000);
 
+            // Assembly complete
+            SetTaskDescription($"🚗 Car ({colour}) - Assembly complete!");
             Console.WriteLine($"  ✅ Car assembly complete!");
 
-            
-            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person 4 (Motheo)
+            // Send to spraybooth
+            SetTaskDescription($"🚗 Car ({colour}) - Sending to Spraybooth (5s drying)");
+            Spraybooth.Instance.Spray("Car", colour);
+
+            // Done
+            SetTaskDescription("None");
         }
 
         public void AddToQueue(ICommand command)
         {
             AddCommand(command);
         }
-        // Added for tracking current task in the UI [AIDEN]
 
-        private string _currentTaskDescription = "None";
-        private readonly object _queueLock = new object();
+        // Thread-safe task description setter
+        private void SetTaskDescription(string description)
+        {
+            lock (_taskLock)
+            {
+                _currentTaskDescription = description;
+            }
+        }
 
         public async Task ProcessQueueAsync()
         {
@@ -89,14 +112,13 @@ namespace CoolRidesSimulator
                 if (command != null)
                 {
                     _isBusy = true;
-                    _currentTaskDescription = command.GetName();
+                    SetTaskDescription(command.GetName());
                     Console.WriteLine($"[CarAssemblyLine] Executing: {command.GetName()}");
                     command.Execute();
                     _isBusy = false;
-                    _currentTaskDescription = "None";
                 }
 
-                await Task.Delay(100); // Small delay to prevent CPU spinning
+                await Task.Delay(100);
             }
         }
 
@@ -110,7 +132,10 @@ namespace CoolRidesSimulator
 
         public string GetCurrentTaskDescription()
         {
-            return _currentTaskDescription;
+            lock (_taskLock)
+            {
+                return _currentTaskDescription;
+            }
         }
     }
 }
