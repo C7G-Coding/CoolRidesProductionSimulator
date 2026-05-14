@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,12 +10,20 @@ namespace CoolRidesSimulator
         private Queue<ICommand> _commandQueue = new Queue<ICommand>();
         private bool _isBusy = false;
 
+        // For thread-safe task tracking
+        private string _currentTaskDescription = "None";
+        private readonly object _taskLock = new object();
+        private readonly object _queueLock = new object();
+
         public string Name => "Car Assembly Line";
         public bool IsBusy => _isBusy;
 
         public void AddCommand(ICommand command)
         {
-            _commandQueue.Enqueue(command);
+            lock (_queueLock)
+            {
+                _commandQueue.Enqueue(command);
+            }
             Console.WriteLine($"[CarAssemblyLine] Added to queue: {command.GetName()}");
         }
 
@@ -40,39 +46,62 @@ namespace CoolRidesSimulator
 
         public void BuildCar(string colour)
         {
+            // Update task - Starting
+            SetTaskDescription($"🚗 Car ({colour}) - Starting assembly...");
+
             Console.WriteLine($"  🚗 Building CAR in {colour}");
 
+            // Chassis (2 seconds)
+            SetTaskDescription($"🚗 Car ({colour}) - Building Chassis (2s)");
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  
+            Thread.Sleep(2000);
 
+            // Shell (2 seconds)
+            SetTaskDescription($"🚗 Car ({colour}) - Building Shell (2s)");
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(2000);  
+            Thread.Sleep(2000);
 
+            // 4 Wheels (0.5 seconds each = 2 seconds total)
+            SetTaskDescription($"🚗 Car ({colour}) - Building 4 Wheels (2s total)");
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  
+                Thread.Sleep(500);
             }
 
+            // Interior Trim (1 second)
+            SetTaskDescription($"🚗 Car ({colour}) - Installing Interior Trim (1s)");
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(1000); 
+            Thread.Sleep(1000);
 
+            // Assembly complete
+            SetTaskDescription($"🚗 Car ({colour}) - Assembly complete!");
             Console.WriteLine($"  ✅ Car assembly complete!");
 
-            
-            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person 4 (Motheo)
+            // Send to spraybooth
+            SetTaskDescription($"🚗 Car ({colour}) - Sending to Spraybooth (5s drying)");
+            Spraybooth.Instance.Spray("Car", colour);
+
+            // Done
+            SetTaskDescription("None");
         }
 
         public void AddToQueue(ICommand command)
         {
             AddCommand(command);
         }
-        // Added for tracking current task in the UI [AIDEN]
 
-        private string _currentTaskDescription = "None";
-        private readonly object _queueLock = new object();
+        // Thread-safe task description setter
+        private void SetTaskDescription(string description)
+        {
+            lock (_taskLock)
+            {
+                _currentTaskDescription = description;
+            }
+        }
 
+        // Async queue processor for GUI responsiveness
         public async Task ProcessQueueAsync()
         {
             while (true)
@@ -87,11 +116,10 @@ namespace CoolRidesSimulator
                 if (command != null)
                 {
                     _isBusy = true;
-                    _currentTaskDescription = command.GetName();
+                    SetTaskDescription(command.GetName());
                     Console.WriteLine($"[CarAssemblyLine] Executing: {command.GetName()}");
                     command.Execute();
                     _isBusy = false;
-                    _currentTaskDescription = "None";
                 }
 
                 await Task.Delay(100); // Small delay to prevent CPU spinning
@@ -108,7 +136,10 @@ namespace CoolRidesSimulator
 
         public string GetCurrentTaskDescription()
         {
-            return _currentTaskDescription;
+            lock (_taskLock)
+            {
+                return _currentTaskDescription;
+            }
         }
     }
 }

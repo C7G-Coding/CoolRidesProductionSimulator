@@ -5,32 +5,41 @@ namespace CoolRidesSimulator
 {
     public class HQ
     {
-        private CarAssemblyLine _carAssemblyLine;
-        private MinibusAssemblyLine _minibusAssemblyLine;
-
-        // Track order history for display
+        private CarAssemblyLine _carLine;
+        private MinibusAssemblyLine _busLine;
         private List<string> _orderHistory = new List<string>();
 
-        public HQ(CarAssemblyLine carLine, MinibusAssemblyLine minibusLine)
+        public HQ(CarAssemblyLine carLine, MinibusAssemblyLine busLine)
         {
-            _carAssemblyLine = carLine;
-            _minibusAssemblyLine = minibusLine;
+            _carLine = carLine;
+            _busLine = busLine;
         }
 
         public void OrderCar(string colour)
         {
-            var command = new BuildCarCommand(_carAssemblyLine, colour);
-            _carAssemblyLine.AddCommand(command);
-            _orderHistory.Insert(0, $"[CAR] Ordered {colour} LUX1000 at {DateTime.Now:HH:mm:ss}");
-            Console.WriteLine($"HQ: Car order placed for {colour}");
+            var command = new BuildCarCommand(_carLine, colour);
+            _carLine.AddCommand(command);
+            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] ORDER: Car LUX1000 in {colour}");
+
+            // Also log to console for debugging
+            Console.WriteLine($"[HQ] Car order placed for {colour}");
         }
 
         public void OrderMinibus(string colour)
         {
-            var command = new BuildMinibusCommand(_minibusAssemblyLine, colour);
-            _minibusAssemblyLine.AddCommand(command);
-            _orderHistory.Insert(0, $"[MINIBUS] Ordered {colour} MV500 at {DateTime.Now:HH:mm:ss}");
-            Console.WriteLine($"HQ: Minibus order placed for {colour}");
+            var command = new BuildMinibusCommand(_busLine, colour);
+            _busLine.AddCommand(command);
+            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] ORDER: Minibus MV500 in {colour}");
+
+            Console.WriteLine($"[HQ] Minibus order placed for {colour}");
+        }
+
+        public void AddActivityLog(string activity)
+        {
+            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {activity}");
+            // Keep only last 50 entries
+            if (_orderHistory.Count > 50)
+                _orderHistory.RemoveAt(_orderHistory.Count - 1);
         }
 
         public List<string> GetOrderHistory()
