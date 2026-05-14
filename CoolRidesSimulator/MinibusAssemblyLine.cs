@@ -33,82 +33,44 @@ namespace CoolRidesSimulator
             }
         }
 
-        public void UndoLastCommand()
-        {
-            Console.WriteLine("[MinibusAssemblyLine] Undo feature - to be implemented");
-        }
-
         public void BuildMinibus(string colour)
         {
-            Console.WriteLine($"  🚐 Building MINIBUS in {colour}");
+            Console.WriteLine($"\n STARTING MINIBUS PRODUCTION - {colour}");
 
-            Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  
 
-            Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(3000); 
+            Console.WriteLine($"\n Step 1/6: Building Chassis...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Minibus Chassis complete! (2 seconds)");
 
-            Console.WriteLine("    ⚙️ Building 4 Wheels...");
-            for (int i = 0; i < 4; i++)
+            Console.WriteLine($"\n Step 2/6: Building Shell...");
+            Thread.Sleep(3000);
+            Console.WriteLine($"   ✓ Minibus Shell complete! (3 seconds)");
+
+            Console.WriteLine($"\n Step 3/6: Building 4 Wheels...");
+            for (int i = 1; i <= 4; i++)
             {
-                Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  
+                Console.WriteLine($"   Building Wheel {i}...");
+                Thread.Sleep(500);
+                Console.WriteLine($"   ✓ Wheel {i} complete! (0.5 seconds)");
             }
+            Console.WriteLine($"   ✓ All 4 wheels complete!");
 
-            Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(2000); 
+            Console.WriteLine($"\n Step 4/6: Installing Interior Trim...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Minibus Trim complete! (2 seconds)");
 
-            Console.WriteLine($"  ✅ Minibus assembly complete!");
+            Console.WriteLine($"\n Step 5/6: Assembling all parts...");
+            Thread.Sleep(500);
+            Console.WriteLine($"   ✓ Assembly complete!");
+
+            Console.WriteLine($"\n Step 6/6: Sending to Spraybooth...");
 
 
-            Spraybooth.Instance.Spray("Minibus", colour);               //Waiting for Person 4 (Motheo)
+            Console.WriteLine($"\n MINIBUS PRODUCTION COMPLETE - {colour}");
+
+
+            Spraybooth.Instance.Spray("Minibus", colour);
         }
 
-        public void AddToQueue(ICommand command)
-        {
-            AddCommand(command);
-        }
-        // Added for tracking current task [AIDEN]
-
-        private string _currentTaskDescription = "None";
-        private readonly object _queueLock = new object();
-
-        public async Task ProcessQueueAsync()
-        {
-            while (true)
-            {
-                ICommand command = null;
-                lock (_queueLock)
-                {
-                    if (_commandQueue.Count > 0)
-                        command = _commandQueue.Dequeue();
-                }
-
-                if (command != null)
-                {
-                    _isBusy = true;
-                    _currentTaskDescription = command.GetName();
-                    Console.WriteLine($"[MinibusAssemblyLine] Executing: {command.GetName()}");
-                    command.Execute();
-                    _isBusy = false;
-                    _currentTaskDescription = "None";
-                }
-
-                await Task.Delay(100);
-            }
-        }
-
-        public int GetQueueCount()
-        {
-            lock (_queueLock)
-            {
-                return _commandQueue.Count;
-            }
-        }
-
-        public string GetCurrentTaskDescription()
-        {
-            return _currentTaskDescription;
-        }
     }
 }

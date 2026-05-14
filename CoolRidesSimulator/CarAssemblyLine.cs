@@ -33,82 +33,44 @@ namespace CoolRidesSimulator
             }
         }
 
-        public void UndoLastCommand()
-        {
-            Console.WriteLine("[CarAssemblyLine] Undo feature - to be implemented");
-        }
-
         public void BuildCar(string colour)
         {
-            Console.WriteLine($"  🚗 Building CAR in {colour}");
 
-            Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);  
-
-            Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(2000);  
-
-            Console.WriteLine("    ⚙️ Building 4 Wheels...");
-            for (int i = 0; i < 4; i++)
-            {
-                Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);  
-            }
-
-            Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(1000); 
-
-            Console.WriteLine($"  ✅ Car assembly complete!");
-
+            Console.WriteLine($"\n STARTING CAR PRODUCTION - {colour}");
             
-            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person 4 (Motheo)
-        }
 
-        public void AddToQueue(ICommand command)
-        {
-            AddCommand(command);
-        }
-        // Added for tracking current task in the UI [AIDEN]
+            Console.WriteLine($"\n Step 1/6: Building Chassis...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Car Chassis complete! (2 seconds)");
 
-        private string _currentTaskDescription = "None";
-        private readonly object _queueLock = new object();
+            Console.WriteLine($"\n Step 2/6: Building Shell...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Car Shell complete! (2 seconds)");
 
-        public async Task ProcessQueueAsync()
-        {
-            while (true)
+            Console.WriteLine($"\n Step 3/6: Building 4 Wheels...");
+            for (int i = 1; i <= 4; i++)
             {
-                ICommand command = null;
-                lock (_queueLock)
-                {
-                    if (_commandQueue.Count > 0)
-                        command = _commandQueue.Dequeue();
-                }
-
-                if (command != null)
-                {
-                    _isBusy = true;
-                    _currentTaskDescription = command.GetName();
-                    Console.WriteLine($"[CarAssemblyLine] Executing: {command.GetName()}");
-                    command.Execute();
-                    _isBusy = false;
-                    _currentTaskDescription = "None";
-                }
-
-                await Task.Delay(100); // Small delay to prevent CPU spinning
+                Console.WriteLine($"   Building Wheel {i}...");
+                Thread.Sleep(500);
+                Console.WriteLine($"   ✓ Wheel {i} complete! (0.5 seconds)");
             }
+            Console.WriteLine($"   ✓ All 4 wheels complete!");
+
+            Console.WriteLine($"\n Step 4/6: Installing Interior Trim...");
+            Thread.Sleep(1000);
+            Console.WriteLine($"   ✓ Car Trim complete! (1 second)");
+
+            Console.WriteLine($"\n Step 5/6: Assembling all parts...");
+            Thread.Sleep(500);
+            Console.WriteLine($"   ✓ Assembly complete!");
+
+            Console.WriteLine($"\n Step 6/6: Sending to Spraybooth...");
+
+            Console.WriteLine($"\n    CAR PRODUCTION COMPLETE - {colour}");
+
+
+            Spraybooth.Instance.Spray("Car", colour);
         }
 
-        public int GetQueueCount()
-        {
-            lock (_queueLock)
-            {
-                return _commandQueue.Count;
-            }
-        }
-
-        public string GetCurrentTaskDescription()
-        {
-            return _currentTaskDescription;
-        }
     }
 }
