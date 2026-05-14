@@ -41,63 +41,40 @@ namespace CoolRidesSimulator
 
         public void BuildCar(string colour)
         {
-<<<<<<< HEAD
-            // Update task - Starting
-            SetTaskDescription($"🚗 Car ({colour}) - Starting assembly...");
-
             Console.WriteLine($"  🚗 Building CAR in {colour}");
 
-            // Chassis (2 seconds)
-            SetTaskDescription($"🚗 Car ({colour}) - Building Chassis (2s)");
             Console.WriteLine("    🔩 Building Chassis...");
-            Thread.Sleep(2000);
+            Thread.Sleep(2000);  
 
-            // Shell (2 seconds)
-            SetTaskDescription($"🚗 Car ({colour}) - Building Shell (2s)");
             Console.WriteLine("    🚘 Building Shell...");
-            Thread.Sleep(2000);
+            Thread.Sleep(2000);  
 
-            // 4 Wheels (0.5 seconds each = 2 seconds total)
-            SetTaskDescription($"🚗 Car ({colour}) - Building 4 Wheels (2s total)");
             Console.WriteLine("    ⚙️ Building 4 Wheels...");
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"      Wheel {i + 1}");
-                Thread.Sleep(500);
+                Thread.Sleep(500);  
             }
+            Console.WriteLine($"   ✓ All 4 wheels complete!");
 
-            // Interior Trim (1 second)
-            SetTaskDescription($"🚗 Car ({colour}) - Installing Interior Trim (1s)");
             Console.WriteLine("    💺 Installing Interior Trim...");
-            Thread.Sleep(1000);
+            Thread.Sleep(1000); 
 
-            // Assembly complete
-            SetTaskDescription($"🚗 Car ({colour}) - Assembly complete!");
             Console.WriteLine($"  ✅ Car assembly complete!");
 
-            // Send to spraybooth
-            SetTaskDescription($"🚗 Car ({colour}) - Sending to Spraybooth (5s drying)");
-            Spraybooth.Instance.Spray("Car", colour);
-
-            // Done
-            SetTaskDescription("None");
+            
+            Spraybooth.Instance.Spray("Car", colour);           //Waiting on this method from Person 4 (Motheo)
         }
 
         public void AddToQueue(ICommand command)
         {
             AddCommand(command);
         }
+        // Added for tracking current task in the UI [AIDEN]
 
-        // Thread-safe task description setter
-        private void SetTaskDescription(string description)
-        {
-            lock (_taskLock)
-            {
-                _currentTaskDescription = description;
-            }
-        }
+        private string _currentTaskDescription = "None";
+        private readonly object _queueLock = new object();
 
-        // Async queue processor for GUI responsiveness
         public async Task ProcessQueueAsync()
         {
             while (true)
@@ -112,53 +89,17 @@ namespace CoolRidesSimulator
                 if (command != null)
                 {
                     _isBusy = true;
-                    SetTaskDescription(command.GetName());
+                    _currentTaskDescription = command.GetName();
                     Console.WriteLine($"[CarAssemblyLine] Executing: {command.GetName()}");
                     command.Execute();
                     _isBusy = false;
+                    _currentTaskDescription = "None";
                 }
 
                 await Task.Delay(100); // Small delay to prevent CPU spinning
-=======
-
-            Console.WriteLine($"\n STARTING CAR PRODUCTION - {colour}");
-            
-
-            Console.WriteLine($"\n Step 1/6: Building Chassis...");
-            Thread.Sleep(2000);
-            Console.WriteLine($"   ✓ Car Chassis complete! (2 seconds)");
-
-            Console.WriteLine($"\n Step 2/6: Building Shell...");
-            Thread.Sleep(2000);
-            Console.WriteLine($"   ✓ Car Shell complete! (2 seconds)");
-
-            Console.WriteLine($"\n Step 3/6: Building 4 Wheels...");
-            for (int i = 1; i <= 4; i++)
-            {
-                Console.WriteLine($"   Building Wheel {i}...");
-                Thread.Sleep(500);
-                Console.WriteLine($"   ✓ Wheel {i} complete! (0.5 seconds)");
->>>>>>> 4821d6a310ab36e882904da991b75243da894913
             }
-            Console.WriteLine($"   ✓ All 4 wheels complete!");
-
-            Console.WriteLine($"\n Step 4/6: Installing Interior Trim...");
-            Thread.Sleep(1000);
-            Console.WriteLine($"   ✓ Car Trim complete! (1 second)");
-
-            Console.WriteLine($"\n Step 5/6: Assembling all parts...");
-            Thread.Sleep(500);
-            Console.WriteLine($"   ✓ Assembly complete!");
-
-            Console.WriteLine($"\n Step 6/6: Sending to Spraybooth...");
-
-            Console.WriteLine($"\n    CAR PRODUCTION COMPLETE - {colour}");
-
-
-            Spraybooth.Instance.Spray("Car", colour);
         }
 
-<<<<<<< HEAD
         public int GetQueueCount()
         {
             lock (_queueLock)
@@ -169,12 +110,7 @@ namespace CoolRidesSimulator
 
         public string GetCurrentTaskDescription()
         {
-            lock (_taskLock)
-            {
-                return _currentTaskDescription;
-            }
+            return _currentTaskDescription;
         }
-=======
->>>>>>> 4821d6a310ab36e882904da991b75243da894913
     }
 }
