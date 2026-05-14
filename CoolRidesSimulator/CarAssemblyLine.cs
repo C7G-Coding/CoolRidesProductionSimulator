@@ -39,13 +39,9 @@ namespace CoolRidesSimulator
             }
         }
 
-        public void UndoLastCommand()
-        {
-            Console.WriteLine("[CarAssemblyLine] Undo feature - to be implemented");
-        }
-
         public void BuildCar(string colour)
         {
+<<<<<<< HEAD
             // Update task - Starting
             SetTaskDescription($"🚗 Car ({colour}) - Starting assembly...");
 
@@ -123,9 +119,46 @@ namespace CoolRidesSimulator
                 }
 
                 await Task.Delay(100); // Small delay to prevent CPU spinning
+=======
+
+            Console.WriteLine($"\n STARTING CAR PRODUCTION - {colour}");
+            
+
+            Console.WriteLine($"\n Step 1/6: Building Chassis...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Car Chassis complete! (2 seconds)");
+
+            Console.WriteLine($"\n Step 2/6: Building Shell...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Car Shell complete! (2 seconds)");
+
+            Console.WriteLine($"\n Step 3/6: Building 4 Wheels...");
+            for (int i = 1; i <= 4; i++)
+            {
+                Console.WriteLine($"   Building Wheel {i}...");
+                Thread.Sleep(500);
+                Console.WriteLine($"   ✓ Wheel {i} complete! (0.5 seconds)");
+>>>>>>> 4821d6a310ab36e882904da991b75243da894913
             }
+            Console.WriteLine($"   ✓ All 4 wheels complete!");
+
+            Console.WriteLine($"\n Step 4/6: Installing Interior Trim...");
+            Thread.Sleep(1000);
+            Console.WriteLine($"   ✓ Car Trim complete! (1 second)");
+
+            Console.WriteLine($"\n Step 5/6: Assembling all parts...");
+            Thread.Sleep(500);
+            Console.WriteLine($"   ✓ Assembly complete!");
+
+            Console.WriteLine($"\n Step 6/6: Sending to Spraybooth...");
+
+            Console.WriteLine($"\n    CAR PRODUCTION COMPLETE - {colour}");
+
+
+            Spraybooth.Instance.Spray("Car", colour);
         }
 
+<<<<<<< HEAD
         public int GetQueueCount()
         {
             lock (_queueLock)
@@ -141,5 +174,7 @@ namespace CoolRidesSimulator
                 return _currentTaskDescription;
             }
         }
+=======
+>>>>>>> 4821d6a310ab36e882904da991b75243da894913
     }
 }

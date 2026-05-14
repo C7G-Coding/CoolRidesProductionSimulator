@@ -39,13 +39,9 @@ namespace CoolRidesSimulator
             }
         }
 
-        public void UndoLastCommand()
-        {
-            Console.WriteLine("[MinibusAssemblyLine] Undo feature - to be implemented");
-        }
-
         public void BuildMinibus(string colour)
         {
+<<<<<<< HEAD
             // Update task - Starting
             SetTaskDescription($"🚐 Minibus ({colour}) - Starting assembly...");
 
@@ -68,8 +64,29 @@ namespace CoolRidesSimulator
             {
                 Console.WriteLine($"      Wheel {i + 1}");
                 Thread.Sleep(500);
-            }
+=======
+            Console.WriteLine($"\n STARTING MINIBUS PRODUCTION - {colour}");
 
+
+            Console.WriteLine($"\n Step 1/6: Building Chassis...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Minibus Chassis complete! (2 seconds)");
+
+            Console.WriteLine($"\n Step 2/6: Building Shell...");
+            Thread.Sleep(3000);
+            Console.WriteLine($"   ✓ Minibus Shell complete! (3 seconds)");
+
+            Console.WriteLine($"\n Step 3/6: Building 4 Wheels...");
+            for (int i = 1; i <= 4; i++)
+            {
+                Console.WriteLine($"   Building Wheel {i}...");
+                Thread.Sleep(500);
+                Console.WriteLine($"   ✓ Wheel {i} complete! (0.5 seconds)");
+>>>>>>> 4821d6a310ab36e882904da991b75243da894913
+            }
+            Console.WriteLine($"   ✓ All 4 wheels complete!");
+
+<<<<<<< HEAD
             // Interior Trim (2 seconds - longer than car)
             SetTaskDescription($"🚐 Minibus ({colour}) - Installing Interior Trim (2s)");
             Console.WriteLine("    💺 Installing Interior Trim...");
@@ -78,11 +95,23 @@ namespace CoolRidesSimulator
             // Assembly complete
             SetTaskDescription($"🚐 Minibus ({colour}) - Assembly complete!");
             Console.WriteLine($"  ✅ Minibus assembly complete!");
+=======
+            Console.WriteLine($"\n Step 4/6: Installing Interior Trim...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"   ✓ Minibus Trim complete! (2 seconds)");
+
+            Console.WriteLine($"\n Step 5/6: Assembling all parts...");
+            Thread.Sleep(500);
+            Console.WriteLine($"   ✓ Assembly complete!");
+
+            Console.WriteLine($"\n Step 6/6: Sending to Spraybooth...");
+>>>>>>> 4821d6a310ab36e882904da991b75243da894913
 
             // Send to spraybooth (7 seconds drying - longer than car)
             SetTaskDescription($"🚐 Minibus ({colour}) - Sending to Spraybooth (7s drying)");
             Spraybooth.Instance.Spray("Minibus", colour);
 
+<<<<<<< HEAD
             // Done
             SetTaskDescription("None");
         }
@@ -141,5 +170,13 @@ namespace CoolRidesSimulator
                 return _currentTaskDescription;
             }
         }
+=======
+            Console.WriteLine($"\n MINIBUS PRODUCTION COMPLETE - {colour}");
+
+
+            Spraybooth.Instance.Spray("Minibus", colour);
+        }
+
+>>>>>>> 4821d6a310ab36e882904da991b75243da894913
     }
 }

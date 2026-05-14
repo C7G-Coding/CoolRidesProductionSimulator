@@ -12,7 +12,6 @@ namespace CoolRidesSimulator
         bool IsBusy { get; }
         void AddCommand(ICommand command);
         void ExecuteAllCommands();
-        void UndoLastCommand();
 
     }
 }
