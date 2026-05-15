@@ -9,23 +9,24 @@ namespace CoolRidesSimulator
     public class BuildMinibusCommand : ICommand
     {
         private MinibusAssemblyLine _assemblyLine;
-        private string _colour;
-        private string _name = "Build Minibus";
+        private readonly string _colour;
+        private readonly string _model;
 
-        public BuildMinibusCommand(MinibusAssemblyLine assemblyLine, string colour)
+        public BuildMinibusCommand(MinibusAssemblyLine assemblyLine, string model, string colour)
         {
             _assemblyLine = assemblyLine;
+            _model = model;
             _colour = colour;
         }
 
         public void Execute()
         {
-            _assemblyLine.BuildMinibus(_colour);
+            _assemblyLine.BuildVehicle(_model, _colour);
         }
 
         public string GetName()
         {
-            return $"{_name} ({_colour})";
+            return $"{_model} ({_colour})";
         }
     }
 }

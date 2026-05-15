@@ -11,7 +11,10 @@ namespace CoolRidesSimulator
         string Name { get; }
         bool IsBusy { get; }
         void AddCommand(ICommand command);
-        void ExecuteAllCommands();
+        int GetQueueCount();
+        string GetCurrentTaskDescription();
+        int GetCompletedCount();
+        Task ProcessQueueAsync();
 
     }
 }

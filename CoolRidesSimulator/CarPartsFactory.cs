@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
@@ -10,19 +11,30 @@ namespace CoolRidesSimulator
     {
         public Chassis CreateChassis()
         {
-            return new CarChassis();
+            Chassis chassis = new CarChassis();
+            Thread.Sleep((int)(chassis.BuildTimeSeconds * 1000));
+            return chassis;
         }
+
         public Shell CreateShell()
         {
-            return new CarShell();
+            Shell part = new CarShell();
+            Thread.Sleep((int)(part.BuildTimeSeconds * 1000));
+            return part;
         }
+
         public Wheel CreateWheels()
         {
-            return new CarWheel();
+            Wheel wheel = new CarWheel();
+            Thread.Sleep((int)(wheel.BuildTimeSeconds * 1000));
+            return wheel;
         }
+
         public Trim TrimDecoration()
         {
-            return new CarTrim();
+            Trim trim = new CarTrim();
+            Thread.Sleep((int)(trim.BuildTimeSeconds * 1000));
+            return trim;
         }
     }
 

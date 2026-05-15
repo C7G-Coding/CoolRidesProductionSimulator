@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    interface IVehiclePartsFactory
+    public interface IVehiclePartsFactory
     {
         Chassis CreateChassis();
         Shell CreateShell();

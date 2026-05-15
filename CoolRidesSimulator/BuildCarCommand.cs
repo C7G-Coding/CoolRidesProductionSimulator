@@ -9,23 +9,24 @@ namespace CoolRidesSimulator
     public class BuildCarCommand : ICommand
     {
         private CarAssemblyLine _assemblyLine;
-        private string _colour;
-        private string _name = "Build Car";
+        private readonly string _colour;
+        private readonly string _model;
 
-        public BuildCarCommand(CarAssemblyLine assemblyLine, string colour)
+        public BuildCarCommand(CarAssemblyLine assemblyLine,string model,  string colour)
         {
             _assemblyLine = assemblyLine;
+            _model = model;
             _colour = colour;
         }
 
         public void Execute()
         {
-            _assemblyLine.BuildCar(_colour);
+            _assemblyLine.BuildVehicle(_model, _colour);
         }
 
         public string GetName()
         {
-            return $"{_name} ({_colour})";
+            return $"{_model} ({_colour})";
         }
     }
 }

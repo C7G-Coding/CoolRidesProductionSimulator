@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    abstract class Wheel
+    public abstract class Wheel
     {
         public abstract string PartName { get; }
         public abstract double BuildTimeSeconds { get; }

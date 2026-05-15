@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    abstract class Chassis
+    public abstract class Chassis
     {
      public abstract string PartName { get; }
      public abstract double BuildTimeSeconds { get; }

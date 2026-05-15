@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CoolRidesSimulator
 {
-    class Car
+    class Car : Vehicle
     {
-        public string Model { get; set; }
-        public string Colour { get; set; }
-
+    
         public Car(string model, string colour)
         {
             Model = model;

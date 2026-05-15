@@ -9,12 +9,13 @@ namespace CoolRidesSimulator
         private static Spraybooth _instance;
         private static readonly object _lock = new object();
 
+        private readonly object _sprayLock = new object();
         private bool _isSpraying = false;
         private string _currentVehicle = "None";
 
         private Spraybooth()
         {
-            Console.WriteLine("[Spraybooth] Singleton instance created");
+
         }
 
         public static Spraybooth Instance
@@ -33,36 +34,56 @@ namespace CoolRidesSimulator
             }
         }
 
-        public bool IsSpraying => _isSpraying;
-        public string GetCurrentVehicle() => _currentVehicle;
-
-        public void Spray(string vehicleType, string colour)
+        public bool IsSpraying
         {
-            lock (_lock)
+            get
             {
-                // Wait if spraybooth is busy
+                lock (_sprayLock)
+                {
+                    return _isSpraying;
+                }
+            }
+        }
+
+        public string GetCurrentVehicle()
+        {
+            lock (_sprayLock)
+            {
+                return _currentVehicle;
+            }
+        }
+
+        public void Spray(Vehicle vehicle)
+        {
+            lock (_sprayLock)
+            {
                 while (_isSpraying)
                 {
-                    Monitor.Wait(_lock);
+                    Monitor.Wait(_sprayLock);
                 }
+
                 _isSpraying = true;
-                _currentVehicle = $"{vehicleType} ({colour})";
+                _currentVehicle = vehicle.ToString();
             }
 
-            int sprayTime = (vehicleType.ToLower() == "car") ? 5000 : 7000;
-            Console.WriteLine($"[Spraybooth] 🎨 Spraying {vehicleType} {colour}... ({sprayTime / 1000} seconds)");
+            Thread.Sleep(GetSprayTimeMilliseconds(vehicle));
 
-            // Simulate spraying time
-            Thread.Sleep(sprayTime);
-
-            Console.WriteLine($"[Spraybooth] ✅ {vehicleType} painted {colour} and dried!");
-
-            lock (_lock)
+            lock (_sprayLock)
             {
                 _isSpraying = false;
                 _currentVehicle = "None";
-                Monitor.Pulse(_lock); // Wake up waiting thread
+                Monitor.PulseAll(_sprayLock);
             }
+        }
+
+        private int GetSprayTimeMilliseconds(Vehicle vehicle)
+        {
+            if (vehicle is Car)
+                return 5000;
+
+            return 7000;
+
         }
     }
 }
+    

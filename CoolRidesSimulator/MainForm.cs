@@ -13,11 +13,10 @@ namespace CoolRidesSimulator
         private MinibusAssemblyLine _minibusLine;
         private Timer _statusTimer;
 
-        // UI Controls
         private Button btnCarBlack, btnCarWhite;
         private Button btnBusBlack, btnBusWhite;
-        private Label lblCarStatus, lblCarTask, lblCarQueue;
-        private Label lblBusStatus, lblBusTask, lblBusQueue;
+        private Label lblCarStatus, lblCarTask, lblCarQueue, lblCarCompleted;
+        private Label lblBusStatus, lblBusTask, lblBusQueue, lblBusCompleted;
         private Label lblSprayStatus, lblSprayVehicle;
         private ListBox lstOrders;
         private GroupBox grpCar, grpBus, grpSpray, grpHistory;
@@ -30,11 +29,9 @@ namespace CoolRidesSimulator
             _minibusLine = new MinibusAssemblyLine();
             _hq = new HQ(_carLine, _minibusLine);
 
-            // Start background processing
             Task.Run(() => _carLine.ProcessQueueAsync());
             Task.Run(() => _minibusLine.ProcessQueueAsync());
 
-            // Timer for status updates
             _statusTimer = new Timer();
             _statusTimer.Interval = 500;
             _statusTimer.Tick += UpdateStatus;
@@ -44,16 +41,15 @@ namespace CoolRidesSimulator
         private void InitializeComponent()
         {
             this.Text = "Cool Rides Production System";
-            this.Size = new Size(850, 650);
+            this.Size = new Size(900, 670);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.LightGray;
 
-            // Car Group
             grpCar = new GroupBox()
             {
                 Text = "Car Assembly Line - LUX1000",
                 Location = new Point(15, 15),
-                Size = new Size(390, 170),
+                Size = new Size(410, 190),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
@@ -65,7 +61,7 @@ namespace CoolRidesSimulator
                 BackColor = Color.Black,
                 ForeColor = Color.White
             };
-            btnCarBlack.Click += (s, e) => _hq.OrderCar("Black");
+            btnCarBlack.Click += (s, e) => _hq.OrderVehicle("LUX1000", "Black");
 
             btnCarWhite = new Button()
             {
@@ -75,37 +71,20 @@ namespace CoolRidesSimulator
                 BackColor = Color.White,
                 ForeColor = Color.Black
             };
-            btnCarWhite.Click += (s, e) => _hq.OrderCar("White");
+            btnCarWhite.Click += (s, e) => _hq.OrderVehicle("LUX1000", "White");
 
-            lblCarStatus = new Label()
-            {
-                Text = "Status: Idle",
-                Location = new Point(15, 90),
-                Size = new Size(150, 25)
-            };
+            lblCarStatus = new Label() { Text = "Status: Idle", Location = new Point(15, 90), Size = new Size(150, 25) };
+            lblCarTask = new Label() { Text = "Current: None", Location = new Point(15, 115), Size = new Size(380, 25) };
+            lblCarQueue = new Label() { Text = "Queue: 0", Location = new Point(15, 140), Size = new Size(150, 25) };
+            lblCarCompleted = new Label() { Text = "Completed: 0", Location = new Point(15, 165), Size = new Size(150, 25) };
 
-            lblCarTask = new Label()
-            {
-                Text = "Current: None",
-                Location = new Point(15, 115),
-                Size = new Size(350, 25)
-            };
+            grpCar.Controls.AddRange(new Control[] { btnCarBlack, btnCarWhite, lblCarStatus, lblCarTask, lblCarQueue, lblCarCompleted });
 
-            lblCarQueue = new Label()
-            {
-                Text = "Queue: 0",
-                Location = new Point(15, 140),
-                Size = new Size(150, 25)
-            };
-
-            grpCar.Controls.AddRange(new Control[] { btnCarBlack, btnCarWhite, lblCarStatus, lblCarTask, lblCarQueue });
-
-            // Bus Group
             grpBus = new GroupBox()
             {
                 Text = "Minibus Assembly Line - MV500",
-                Location = new Point(420, 15),
-                Size = new Size(390, 170),
+                Location = new Point(440, 15),
+                Size = new Size(410, 190),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
@@ -117,7 +96,7 @@ namespace CoolRidesSimulator
                 BackColor = Color.Black,
                 ForeColor = Color.White
             };
-            btnBusBlack.Click += (s, e) => _hq.OrderMinibus("Black");
+            btnBusBlack.Click += (s, e) => _hq.OrderVehicle("MV500", "Black");
 
             btnBusWhite = new Button()
             {
@@ -127,37 +106,20 @@ namespace CoolRidesSimulator
                 BackColor = Color.White,
                 ForeColor = Color.Black
             };
-            btnBusWhite.Click += (s, e) => _hq.OrderMinibus("White");
+            btnBusWhite.Click += (s, e) => _hq.OrderVehicle("MV500", "White");
 
-            lblBusStatus = new Label()
-            {
-                Text = "Status: Idle",
-                Location = new Point(15, 90),
-                Size = new Size(150, 25)
-            };
+            lblBusStatus = new Label() { Text = "Status: Idle", Location = new Point(15, 90), Size = new Size(150, 25) };
+            lblBusTask = new Label() { Text = "Current: None", Location = new Point(15, 115), Size = new Size(380, 25) };
+            lblBusQueue = new Label() { Text = "Queue: 0", Location = new Point(15, 140), Size = new Size(150, 25) };
+            lblBusCompleted = new Label() { Text = "Completed: 0", Location = new Point(15, 165), Size = new Size(150, 25) };
 
-            lblBusTask = new Label()
-            {
-                Text = "Current: None",
-                Location = new Point(15, 115),
-                Size = new Size(350, 25)
-            };
+            grpBus.Controls.AddRange(new Control[] { btnBusBlack, btnBusWhite, lblBusStatus, lblBusTask, lblBusQueue, lblBusCompleted });
 
-            lblBusQueue = new Label()
-            {
-                Text = "Queue: 0",
-                Location = new Point(15, 140),
-                Size = new Size(150, 25)
-            };
-
-            grpBus.Controls.AddRange(new Control[] { btnBusBlack, btnBusWhite, lblBusStatus, lblBusTask, lblBusQueue });
-
-            // Spraybooth Group
             grpSpray = new GroupBox()
             {
                 Text = "Spraybooth",
-                Location = new Point(15, 200),
-                Size = new Size(795, 80),
+                Location = new Point(15, 220),
+                Size = new Size(835, 80),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
@@ -173,96 +135,55 @@ namespace CoolRidesSimulator
             {
                 Text = "Currently Spraying: None",
                 Location = new Point(200, 35),
-                Size = new Size(350, 30)
+                Size = new Size(400, 30)
             };
 
             grpSpray.Controls.AddRange(new Control[] { lblSprayStatus, lblSprayVehicle });
 
-            // Order History
             grpHistory = new GroupBox()
             {
                 Text = "Order History & Activity Log",
-                Location = new Point(15, 295),
-                Size = new Size(795, 300),
+                Location = new Point(15, 315),
+                Size = new Size(835, 300),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
             lstOrders = new ListBox()
             {
                 Location = new Point(10, 25),
-                Size = new Size(770, 260),
+                Size = new Size(810, 260),
                 Font = new Font("Consolas", 9)
             };
 
             grpHistory.Controls.Add(lstOrders);
 
-            // Add all to form
             this.Controls.AddRange(new Control[] { grpCar, grpBus, grpSpray, grpHistory });
         }
 
         private void UpdateStatus(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => UpdateStatus(sender, e)));
-                return;
-            }
-
-            // Car status
-            if (_carLine.IsBusy)
-            {
-                lblCarStatus.Text = "Status: Busy";
-                lblCarStatus.ForeColor = Color.Red;
-            }
-            else
-            {
-                lblCarStatus.Text = "Status: Idle";
-                lblCarStatus.ForeColor = Color.Green;
-            }
-
-            // Get current task - this will show things like "Build Car (Black)" from your command
-            string currentTask = _carLine.GetCurrentTaskDescription();
-            lblCarTask.Text = $"Current: {currentTask}";
+            lblCarStatus.Text = _carLine.IsBusy ? "Status: Busy" : "Status: Idle";
+            lblCarStatus.ForeColor = _carLine.IsBusy ? Color.Red : Color.Green;
+            lblCarTask.Text = $"Current: {_carLine.GetCurrentTaskDescription()}";
             lblCarQueue.Text = $"Queue: {_carLine.GetQueueCount()}";
+            lblCarCompleted.Text = $"Completed: {_carLine.GetCompletedCount()}";
 
-            // Bus status
-            if (_minibusLine.IsBusy)
-            {
-                lblBusStatus.Text = "Status: Busy";
-                lblBusStatus.ForeColor = Color.Red;
-            }
-            else
-            {
-                lblBusStatus.Text = "Status: Idle";
-                lblBusStatus.ForeColor = Color.Green;
-            }
-
-            string currentBusTask = _minibusLine.GetCurrentTaskDescription();
-            lblBusTask.Text = $"Current: {currentBusTask}";
+            lblBusStatus.Text = _minibusLine.IsBusy ? "Status: Busy" : "Status: Idle";
+            lblBusStatus.ForeColor = _minibusLine.IsBusy ? Color.Red : Color.Green;
+            lblBusTask.Text = $"Current: {_minibusLine.GetCurrentTaskDescription()}";
             lblBusQueue.Text = $"Queue: {_minibusLine.GetQueueCount()}";
+            lblBusCompleted.Text = $"Completed: {_minibusLine.GetCompletedCount()}";
 
-            // Spraybooth status
-            if (Spraybooth.Instance.IsSpraying)
-            {
-                lblSprayStatus.Text = "Status: Spraying";
-                lblSprayStatus.ForeColor = Color.Orange;
-            }
-            else
-            {
-                lblSprayStatus.Text = "Status: Ready";
-                lblSprayStatus.ForeColor = Color.Green;
-            }
-
+            lblSprayStatus.Text = Spraybooth.Instance.IsSpraying ? "Status: Spraying" : "Status: Ready";
+            lblSprayStatus.ForeColor = Spraybooth.Instance.IsSpraying ? Color.Orange : Color.Green;
             lblSprayVehicle.Text = $"Currently Spraying: {Spraybooth.Instance.GetCurrentVehicle()}";
 
-            // Update order history display
-            var history = _hq.GetOrderHistory();
             lstOrders.Items.Clear();
+            var history = _hq.GetOrderHistory();
 
-            int maxItems = Math.Min(20, history.Count);
-            for (int i = 0; i < maxItems; i++)
+            foreach (var item in history)
             {
-                lstOrders.Items.Add(history[i]);
+                lstOrders.Items.Add(item);
             }
         }
     }

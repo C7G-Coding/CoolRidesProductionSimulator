@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 namespace CoolRidesSimulator
 {
+
     public class HQ
     {
-        private CarAssemblyLine _carLine;
-        private MinibusAssemblyLine _busLine;
-        private List<string> _orderHistory = new List<string>();
+        private readonly CarAssemblyLine _carLine;
+        private readonly MinibusAssemblyLine _busLine;
+        private readonly List<string> _orderHistory = new List<string>();
+        private readonly object _historyLock = new object();
 
         public HQ(CarAssemblyLine carLine, MinibusAssemblyLine busLine)
         {
@@ -15,36 +17,46 @@ namespace CoolRidesSimulator
             _busLine = busLine;
         }
 
-        public void OrderCar(string colour)
+        public void OrderVehicle(string model, string colour)
         {
-            var command = new BuildCarCommand(_carLine, colour);
-            _carLine.AddCommand(command);
-            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] ORDER: Car LUX1000 in {colour}");
-
-            // Also log to console for debugging
-            Console.WriteLine($"[HQ] Car order placed for {colour}");
-        }
-
-        public void OrderMinibus(string colour)
-        {
-            var command = new BuildMinibusCommand(_busLine, colour);
-            _busLine.AddCommand(command);
-            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] ORDER: Minibus MV500 in {colour}");
-
-            Console.WriteLine($"[HQ] Minibus order placed for {colour}");
+            if (model == "LUX1000")
+            {
+                var command = new BuildCarCommand(_carLine, model, colour);
+                _carLine.AddCommand(command);
+                AddActivityLog($"ORDER: {model} in {colour}");
+            }
+            else if (model == "MV500")
+            {
+                var command = new BuildMinibusCommand(_busLine, model, colour);
+                _busLine.AddCommand(command);
+                AddActivityLog($"ORDER: {model} in {colour}");
+            }
+            else
+            {
+                throw new ArgumentException("Unknown vehicle model.");
+            }
         }
 
         public void AddActivityLog(string activity)
         {
-            _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {activity}");
-            // Keep only last 50 entries
-            if (_orderHistory.Count > 50)
-                _orderHistory.RemoveAt(_orderHistory.Count - 1);
+            lock (_historyLock)
+            {
+                _orderHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {activity}");
+
+                if (_orderHistory.Count > 100)
+                {
+                    _orderHistory.RemoveAt(_orderHistory.Count - 1);
+                }
+            }
         }
 
         public List<string> GetOrderHistory()
         {
-            return _orderHistory;
+            lock (_historyLock)
+            {
+                return new List<string>(_orderHistory);
+            }
         }
+
     }
 }
