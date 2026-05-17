@@ -15,11 +15,15 @@ namespace CoolRidesSimulator
 
         private Button btnCarBlack, btnCarWhite;
         private Button btnBusBlack, btnBusWhite;
+
         private Label lblCarStatus, lblCarTask, lblCarQueue, lblCarCompleted;
         private Label lblBusStatus, lblBusTask, lblBusQueue, lblBusCompleted;
         private Label lblSprayStatus, lblSprayVehicle;
+        private Label lblMembers;
+
         private ListBox lstOrders;
-        private GroupBox grpCar, grpBus, grpSpray, grpHistory;
+
+        private GroupBox grpCar, grpBus, grpSpray, grpHistory, grpMembers;
 
         public MainForm()
         {
@@ -41,7 +45,7 @@ namespace CoolRidesSimulator
         private void InitializeComponent()
         {
             this.Text = "Cool Rides Production System";
-            this.Size = new Size(900, 670);
+            this.Size = new Size(900, 860);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.LightGray;
 
@@ -73,12 +77,43 @@ namespace CoolRidesSimulator
             };
             btnCarWhite.Click += (s, e) => _hq.OrderVehicle("LUX1000", "White");
 
-            lblCarStatus = new Label() { Text = "Status: Idle", Location = new Point(15, 90), Size = new Size(150, 25) };
-            lblCarTask = new Label() { Text = "Current: None", Location = new Point(15, 115), Size = new Size(380, 25) };
-            lblCarQueue = new Label() { Text = "Queue: 0", Location = new Point(15, 140), Size = new Size(150, 25) };
-            lblCarCompleted = new Label() { Text = "Completed: 0", Location = new Point(15, 165), Size = new Size(150, 25) };
+            lblCarStatus = new Label()
+            {
+                Text = "Status: Idle",
+                Location = new Point(15, 90),
+                Size = new Size(150, 25)
+            };
 
-            grpCar.Controls.AddRange(new Control[] { btnCarBlack, btnCarWhite, lblCarStatus, lblCarTask, lblCarQueue, lblCarCompleted });
+            lblCarTask = new Label()
+            {
+                Text = "Current: None",
+                Location = new Point(15, 115),
+                Size = new Size(380, 25)
+            };
+
+            lblCarQueue = new Label()
+            {
+                Text = "Queue: 0",
+                Location = new Point(15, 140),
+                Size = new Size(150, 25)
+            };
+
+            lblCarCompleted = new Label()
+            {
+                Text = "Completed: 0",
+                Location = new Point(15, 165),
+                Size = new Size(150, 25)
+            };
+
+            grpCar.Controls.AddRange(new Control[]
+            {
+                btnCarBlack,
+                btnCarWhite,
+                lblCarStatus,
+                lblCarTask,
+                lblCarQueue,
+                lblCarCompleted
+            });
 
             grpBus = new GroupBox()
             {
@@ -108,12 +143,43 @@ namespace CoolRidesSimulator
             };
             btnBusWhite.Click += (s, e) => _hq.OrderVehicle("MV500", "White");
 
-            lblBusStatus = new Label() { Text = "Status: Idle", Location = new Point(15, 90), Size = new Size(150, 25) };
-            lblBusTask = new Label() { Text = "Current: None", Location = new Point(15, 115), Size = new Size(380, 25) };
-            lblBusQueue = new Label() { Text = "Queue: 0", Location = new Point(15, 140), Size = new Size(150, 25) };
-            lblBusCompleted = new Label() { Text = "Completed: 0", Location = new Point(15, 165), Size = new Size(150, 25) };
+            lblBusStatus = new Label()
+            {
+                Text = "Status: Idle",
+                Location = new Point(15, 90),
+                Size = new Size(150, 25)
+            };
 
-            grpBus.Controls.AddRange(new Control[] { btnBusBlack, btnBusWhite, lblBusStatus, lblBusTask, lblBusQueue, lblBusCompleted });
+            lblBusTask = new Label()
+            {
+                Text = "Current: None",
+                Location = new Point(15, 115),
+                Size = new Size(380, 25)
+            };
+
+            lblBusQueue = new Label()
+            {
+                Text = "Queue: 0",
+                Location = new Point(15, 140),
+                Size = new Size(150, 25)
+            };
+
+            lblBusCompleted = new Label()
+            {
+                Text = "Completed: 0",
+                Location = new Point(15, 165),
+                Size = new Size(150, 25)
+            };
+
+            grpBus.Controls.AddRange(new Control[]
+            {
+                btnBusBlack,
+                btnBusWhite,
+                lblBusStatus,
+                lblBusTask,
+                lblBusQueue,
+                lblBusCompleted
+            });
 
             grpSpray = new GroupBox()
             {
@@ -138,26 +204,60 @@ namespace CoolRidesSimulator
                 Size = new Size(400, 30)
             };
 
-            grpSpray.Controls.AddRange(new Control[] { lblSprayStatus, lblSprayVehicle });
+            grpSpray.Controls.AddRange(new Control[]
+            {
+                lblSprayStatus,
+                lblSprayVehicle
+            });
 
             grpHistory = new GroupBox()
             {
                 Text = "Order History & Activity Log",
                 Location = new Point(15, 315),
-                Size = new Size(835, 300),
+                Size = new Size(835, 250),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
             lstOrders = new ListBox()
             {
                 Location = new Point(10, 25),
-                Size = new Size(810, 260),
+                Size = new Size(810, 210),
                 Font = new Font("Consolas", 9)
             };
 
             grpHistory.Controls.Add(lstOrders);
 
-            this.Controls.AddRange(new Control[] { grpCar, grpBus, grpSpray, grpHistory });
+            grpMembers = new GroupBox()
+            {
+                Text = "Group Members",
+                Location = new Point(15, 580),
+                Size = new Size(835, 140),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+
+            lblMembers = new Label()
+            {
+                Location = new Point(15, 25),
+                Size = new Size(780, 100),
+                Font = new Font("Segoe UI", 11, FontStyle.Regular),
+                AutoSize = false,
+                Text =
+                    "• Motheo Kekana: 229237754\r\n" +
+                    "• Cohen Geswint: 229785689\r\n" +
+                    "• Aiden Engelbrecht: 229234720\r\n" +
+                    "• Malik Ndayisaba: 229818994 \r\n"
+            };
+
+            grpMembers.Controls.Add(lblMembers);
+
+            this.Controls.AddRange(new Control[]
+            {
+                grpCar,
+                grpBus,
+                grpSpray,
+                grpHistory,
+                grpMembers
+            });
         }
 
         private void UpdateStatus(object sender, EventArgs e)
@@ -179,6 +279,7 @@ namespace CoolRidesSimulator
             lblSprayVehicle.Text = $"Currently Spraying: {Spraybooth.Instance.GetCurrentVehicle()}";
 
             lstOrders.Items.Clear();
+
             var history = _hq.GetOrderHistory();
 
             foreach (var item in history)
